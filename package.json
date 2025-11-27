@@ -1,23 +1,51 @@
 {
   "name": "carbon-intellisense",
-  "displayName": "carbon-intellisense",
-  "description": "IntelliSense for Carbon Design System tokens",
-  "version": "0.0.1",
+  "displayName": "Carbon Design System IntelliSense",
+  "description": "Auto-completion and intellisense documentation for Carbon Design System SCSS tokens",
+  "version": "0.1.0",
+  "publisher": "colenocks",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/colenocks/carbon-intellisense"
+  },
+  "keywords": [
+    "carbon",
+    "design-system",
+    "scss",
+    "tokens",
+    "intellisense",
+    "autocomplete",
+    "hover"
+  ],
   "engines": {
     "vscode": "^1.106.1"
   },
   "categories": [
-    "Other"
+    "Programming Languages",
+    "Snippets"
   ],
-  "activationEvents": [],
-  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onLanguage:scss",
+    "onLanguage:css"
+  ],
+  "main": "./out/extension.js",
   "contributes": {
-    "commands": [
-      {
-        "command": "carbon-intellisense.helloWorld",
-        "title": "Hello World"
+    "configuration": {
+      "title": "Carbon IntelliSense",
+      "properties": {
+        "carbonIntellisense.theme": {
+          "type": "string",
+          "default": "white",
+          "enum": ["white", "g10", "g90", "g100"],
+          "description": "Carbon theme for token value suggestions"
+        },
+        "carbonIntellisense.showComputedValues": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show computed pixel values in suggestions"
+        }
       }
-    ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",

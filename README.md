@@ -1,71 +1,128 @@
-# carbon-intellisense README
+# Carbon Design System IntelliSense
 
-This is the README for your extension "carbon-intellisense". After writing up a brief description, we recommend including the following sections.
+Intelligent code completion and hover documentation for [Carbon Design System](https://www.carbondesignsystem.com/) design tokens in SCSS and CSS files.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+- 🎨 **Auto-completion** for Carbon design tokens (spacing, colors, typography, layout, motion)
+- 💡 **Hover information** with token values, computed values, and descriptions
+- 🎯 **Smart namespace detection** — automatically suggests tokens from imported Carbon modules
+- 🌓 **Theme-aware values** — shows token values for the configured Carbon theme (white, g10, g90, g100)
+- 📦 **Zero configuration** — works out of the box with standard Carbon Design System imports
 
-For example if there is an image subfolder under your extension project workspace:
+## Installation
 
-\!\[feature X\]\(images/feature-x.png\)
+Install from the VS Code Extension Marketplace or build from source:
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+```bash
+npm install
+npm run compile
+vsce package
+```
 
-## Requirements
+## Usage
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+### Import Carbon Tokens
 
-## Extension Settings
+Add `@use` imports for Carbon design tokens in your SCSS files:
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+```scss
+@use '@carbon/styles/scss/spacing' as spacing;
+@use '@carbon/styles/scss/theme' as theme;
+@use '@carbon/styles/scss/type' as type;
+@use '@carbon/styles/scss/motion' as motion;
+```
 
-For example:
+### Access Tokens with IntelliSense
 
-This extension contributes the following settings:
+Type the namespace followed by a dot to trigger auto-completion:
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+```scss
+// Spacing tokens
+margin: spacing.$spacing-03;  // 8px
+padding: spacing.$spacing-05; // 16px
 
-## Known Issues
+// Theme colors
+background-color: theme.$background;
+color: theme.$text-primary;
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+// Typography
+font-size: type.$font-size-02;
 
-## Release Notes
+// Motion
+transition: all motion.$motion-duration-01;
+```
 
-Users appreciate release notes as you update your extension.
+Hover over any token to see:
 
-### 1.0.0
+- Token name and value
+- Computed pixel equivalent (e.g., `0.5rem (8px)`)
+- Description
+- Examples
 
-Initial release of ...
+## Configuration
 
-### 1.0.1
+Configure token display via VS Code settings:
 
-Fixed issue #.
+```json
+{
+  "carbonIntellisense.theme": "white",
+  "carbonIntellisense.showComputedValues": true
+}
+```
 
-### 1.1.0
+### Available Themes
 
-Added features X, Y, and Z.
+- `white` — Light theme (default)
+- `g10` — Gray 10
+- `g90` — Gray 90
+- `g100` — Gray 100
 
----
+## Supported Token Categories
 
-## Following extension guidelines
+- **Spacing** — 13 tokens (spacing-01 through spacing-13)
+- **Color** — 15+ theme tokens (background, text, interactive, border, etc.)
+- **Typography** — Font sizes (font-size-01 through font-size-03)
+- **Layout** — Container and gutter dimensions
+- **Motion** — Duration and easing tokens
 
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
+## Build & Development
 
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
+```bash
+# Compile TypeScript and bundle extension
+npm run compile
 
-## Working with Markdown
+# Watch for changes during development
+npm run watch
 
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
+# Lint source code
+npm run lint
 
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
+# Run tests
+npm run compile-tests
+npm run watch-tests
 
-## For more information
+# Package for publishing
+npm run package
+```
 
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
+## Extension Architecture
 
-**Enjoy!**
+- `src/tokens/` — Token definitions and database
+- `src/parsers/` — SCSS import parser for namespace detection
+- `src/providers/` — VS Code completion and hover providers
+- `src/extension.ts` — Extension activation and provider registration
+
+## Known Limitations
+
+- Requires explicit `@use` imports; namespace-less token references are not supported
+- Token values are statically defined; dynamic/computed token loading from files is not yet implemented
+
+## Contributing
+
+Contributions welcome! Please ensure code follows the ESLint style guide and includes tests.
+
+## License
+
+[Apache License 2.0](LICENSE)
+
