@@ -1,26 +1,59 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import { TokenDatabase } from './tokens/TokenDatabase';
+import { CarbonCompletionProvider } from './providers/CompletionProvider';
+import { CarbonHoverProvider } from './providers/HoverProvider';
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
+let tokenDatabase: TokenDatabase;
+let completionProvider: CarbonCompletionProvider;
+
 export function activate(context: vscode.ExtensionContext) {
+	console.log('Carbon IntelliSense extension is now active');
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "carbon-intellisense" is now active!');
+	tokenDatabase = new TokenDatabase();
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	const disposable = vscode.commands.registerCommand('carbon-intellisense.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from carbon-intellisense!');
+	completionProvider = new CarbonCompletionProvider(tokenDatabase);
+	const hoverProvider = new CarbonHoverProvider(tokenDatabase);
+
+	const scssCompletionDisposable = vscode.languages.registerCompletionItemProvider(
+		{ scheme: 'file', language: 'scss' },
+		completionProvider,
+		'.'
+	);
+
+	const cssCompletionDisposable = vscode.languages.registerCompletionItemProvider(
+		{ scheme: 'file', language: 'css' },
+		completionProvider,
+		'.'
+	);
+
+	const hoverDisposable = vscode.languages.registerHoverProvider(
+		[{ scheme: 'file', language: 'scss' }, { scheme: 'file', language: 'css' }],
+		hoverProvider
+	);
+
+	const documentChangeDisposable = vscode.workspace.onDidChangeTextDocument(event => {
+		completionProvider.clearCache(event.document);
 	});
 
-	context.subscriptions.push(disposable);
+	const configChangeDisposable = vscode.workspace.onDidChangeConfiguration(event => {
+		if (event.affectsConfiguration('carbonIntellisense.theme')) {
+			const config = vscode.workspace.getConfiguration('carbonIntellisense');
+			const theme = config.get<string>('theme', 'white') as any;
+			tokenDatabase.setTheme(theme);
+		}
+	});
+
+	context.subscriptions.push(
+		scssCompletionDisposable,
+		cssCompletionDisposable,
+		hoverDisposable,
+		documentChangeDisposable,
+		configChangeDisposable
+	);
 }
 
-// This method is called when your extension is deactivated
-export function deactivate() {}
+export function deactivate() {
+	console.log('Carbon IntelliSense extension is now deactivated');
+}
