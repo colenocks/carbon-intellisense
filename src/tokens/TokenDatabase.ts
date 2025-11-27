@@ -1,10 +1,15 @@
+import * as vscode from 'vscode';
 import { Token, CarbonTheme } from './types';
 import { spacingTokens } from './spacingTokens';
 import { colorTokens } from './colorTokens';
+import { layoutTokens } from './layoutTokens';
+import { typographyTokens } from './typographyTokens';
+import { motionTokens } from './motionTokens';
 
 export class TokenDatabase {
   private tokens: Map<string, Token[]> = new Map();
   private currentTheme: CarbonTheme = 'white';
+  private watcher: vscode.FileSystemWatcher | null = null;
 
   constructor() {
     this.initializeTokens();
@@ -13,6 +18,9 @@ export class TokenDatabase {
   private initializeTokens(): void {
     this.addTokens('spacing', spacingTokens);
     this.addTokens('theme', colorTokens);
+    this.addTokens('layout', layoutTokens);
+    this.addTokens('type', typographyTokens);
+    this.addTokens('motion', motionTokens);
   }
 
   private addTokens(namespace: string, tokens: Token[]): void {
@@ -47,5 +55,34 @@ export class TokenDatabase {
 
   public getTheme(): CarbonTheme {
     return this.currentTheme;
+  }
+
+  /**
+   * Start watching workspace SCSS files to invalidate caches when imports change.
+   */
+  public startWatchingWorkspace(): void {
+    if (this.watcher) return;
+    try {
+      this.watcher = vscode.workspace.createFileSystemWatcher('**/*.scss');
+      const onChange = () => this.handleWorkspaceChange();
+      this.watcher.onDidChange(onChange);
+      this.watcher.onDidCreate(onChange);
+      this.watcher.onDidDelete(onChange);
+    } catch (e) {
+      // ignore in environments without workspace access
+    }
+  }
+
+  private handleWorkspaceChange(): void {
+    // No-op for now: tokens are static in memory, but providers may clear caches externally.
+    // Keep method for future dynamic token loading.
+    // Emit an event via workspace state if needed in the future.
+  }
+
+  public dispose(): void {
+    if (this.watcher) {
+      this.watcher.dispose();
+      this.watcher = null;
+    }
   }
 }

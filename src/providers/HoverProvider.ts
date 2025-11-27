@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { TokenDatabase } from '../tokens/TokenDatabase';
+import { formatTokenDocumentation } from './formatters';
 
 export class CarbonHoverProvider implements vscode.HoverProvider {
   private tokenDatabase: TokenDatabase;
@@ -16,14 +17,8 @@ export class CarbonHoverProvider implements vscode.HoverProvider {
     const token = this.tokenDatabase.getAllTokens().find(t => t.name === word);
     if (!token) {return null;}
 
-    const value = this.tokenDatabase.getTokenValue(token as any);
-    const md = new vscode.MarkdownString();
-    md.appendMarkdown(`**${token.name}**  \n`);
-    md.appendMarkdown(`Value: \`${value}\``);
-    if ((token as any).computedValue) {md.appendMarkdown(`  \nComputed: \`${(token as any).computedValue}\``);}
-    if (token.description) {
-      md.appendMarkdown(`\n\n${token.description}`);
-    }
+    const doc = formatTokenDocumentation(token as any, this.tokenDatabase);
+    const md = new vscode.MarkdownString(doc);
     return new vscode.Hover(md, wordRange);
   }
 }

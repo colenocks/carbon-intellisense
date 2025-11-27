@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { TokenDatabase } from '../tokens/TokenDatabase';
 import { ScssParser } from '../parsers/ScssParser';
+import { formatTokenDocumentation } from './formatters';
 
 export class CarbonCompletionProvider implements vscode.CompletionItemProvider {
   private tokenDatabase: TokenDatabase;
@@ -29,23 +30,15 @@ export class CarbonCompletionProvider implements vscode.CompletionItemProvider {
       const item = new vscode.CompletionItem(`$${t.name}`, vscode.CompletionItemKind.Variable);
       const value = this.tokenDatabase.getTokenValue(t);
       item.detail = t.computedValue ? `${value} (${t.computedValue})` : value;
-      item.documentation = new vscode.MarkdownString(this.formatDocumentation(t, value));
+      // Use shared formatter for documentation
+      const doc = formatTokenDocumentation(t as any, this.tokenDatabase);
+      item.documentation = new vscode.MarkdownString(doc);
       item.insertText = `$${t.name}`;
       item.sortText = t.name;
       return item;
     });
   }
 
-  private formatDocumentation(token: any, value: string): string {
-    let doc = `**${token.name}**\n\n`;
-    doc += `Value: \`${value}\`\n\n`;
-    if (token.computedValue) doc += `Computed: \`${token.computedValue}\`\n\n`;
-    if (token.description) doc += `${token.description}\n\n`;
-    if (token.examples && token.examples.length) {
-      doc += `**Examples:**\n\`\`\`scss\n${token.examples.join('\n')}\n\`\`\``;
-    }
-    return doc;
-  }
 
   public clearCache(document: vscode.TextDocument): void {
     this.documentImports.delete(document.uri.toString());
