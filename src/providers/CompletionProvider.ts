@@ -59,28 +59,40 @@ export class CarbonCompletionProvider implements vscode.CompletionItemProvider {
       return [];
     }
 
+    // Get the line text to determine what range to use for completion
+    const line = document.lineAt(position.line).text;
+    const before = line.substring(0, position.character);
+    
+    // Find where the namespace/dot started so we can replace correctly
+    let rangeStart = position.character;
+    for (let i = position.character - 1; i >= 0; i--) {
+      if (/[a-zA-Z0-9_$-]/.test(line[i])) {
+        rangeStart = i;
+      } else {
+        break;
+      }
+    }
+    
+    const range = new vscode.Range(
+      new vscode.Position(position.line, rangeStart),
+      position
+    );
+
     const completionItems = tokens.map(t => {
-      // Create a completion item with the token name as the label (without $)
       const item = new vscode.CompletionItem(t.name, vscode.CompletionItemKind.Variable);
       const value = this.tokenDatabase.getTokenValue(t);
       
-      // Set detail to show the computed value
       item.detail = t.computedValue ? `${value} (${t.computedValue})` : value;
-      
-      // Set documentation from the token
       const doc = formatTokenDocumentation(t as any, this.tokenDatabase);
       item.documentation = new vscode.MarkdownString(doc);
       
-      // Insert the token with $ prefix
+      // Insert with $ prefix
       item.insertText = `$${t.name}`;
       
-      // Use token name for sorting so items appear alphabetically
-      item.sortText = t.name;
+      // Explicitly set the range to replace
+      item.range = range;
       
-      // Set kind to help VS Code understand this is a variable
-      item.kind = vscode.CompletionItemKind.Variable;
-      
-      // Boost relevance so our items appear at the top
+      // Don't set sortText to let VS Code sort naturally
       item.preselect = false;
       
       return item;
