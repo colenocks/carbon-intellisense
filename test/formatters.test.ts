@@ -1,4 +1,4 @@
-import { expect } from 'chai';
+import * as assert from 'assert';
 import { formatTokenDocumentation } from '../src/providers/formatters.js';
 import { TokenDatabase } from '../src/tokens/TokenDatabase.js';
 
@@ -8,8 +8,8 @@ describe('formatters', () => {
     const tokens = db.getTokensForNamespace('spacing');
     const tok = tokens[0];
     const doc = formatTokenDocumentation(tok as any, db as any);
-    expect(doc).to.be.a('string');
-    expect(doc).to.include(tok.name);
-    expect(doc).to.include('Value:');
+    assert.strictEqual(typeof doc, 'string');
+    assert.ok(doc.includes(tok.name));
+    assert.ok(doc.includes('Value:'));
   });
 });

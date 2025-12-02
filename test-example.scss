@@ -1,0 +1,47 @@
+// Test file for Carbon IntelliSense extension
+// This file demonstrates the features of the extension
+
+@use '@carbon/styles/scss/spacing' as spacing;
+@use '@carbon/styles/scss/theme' as theme;
+@use '@carbon/styles/scss/type' as type;
+@use '@carbon/styles/scss/motion' as motion;
+
+// Spacing tokens
+// Try typing: spacing. to see auto-completion
+.container {
+  margin: spacing.$spacing-03; // 8px
+  padding: spacing.$spacing-05; // 16px
+  gap: spacing.$spacing-02; // 4px
+}
+
+// Theme color tokens
+// Hover over theme.$background to see token details
+.button {
+  background-color: theme.$interactive;
+  color: theme.$text-primary;
+  border: 1px solid theme.$border-subtle-01;
+
+  &:hover {
+    background-color: theme.$background-hover;
+  }
+}
+
+// Typography tokens
+.heading {
+  font-size: type.$font-size-03;
+}
+
+.text {
+  font-size: type.$font-size-02;
+}
+
+// Motion tokens
+.animated {
+  transition: all motion.$motion-duration-01 ease-in-out;
+}
+
+// Test different namespaces
+.card {
+  margin-top: spacing.$spacing-04;
+  background: theme.$layer-01;
+}

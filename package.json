@@ -25,11 +25,25 @@
     "Snippets"
   ],
   "activationEvents": [
+    "*",
     "onLanguage:scss",
-    "onLanguage:css"
+    "onLanguage:css",
+    "onCommand:carbonIntellisense.diagnostics"
   ],
-  "main": "./out/extension.js",
+  "main": "./dist/extension.js",
   "contributes": {
+    "commands": [
+      {
+        "command": "carbonIntellisense.diagnostics",
+        "title": "Carbon IntelliSense: Diagnostics",
+        "category": "Carbon IntelliSense"
+      },
+      {
+        "command": "carbonIntellisense.invokeProvider",
+        "title": "Carbon IntelliSense: Invoke Provider",
+        "category": "Carbon IntelliSense"
+      }
+    ],
     "configuration": {
       "title": "Carbon IntelliSense",
       "properties": {
@@ -59,13 +73,11 @@
     "test": "npm run compile-tests && mocha --recursive out/test --reporter spec"
   },
   "devDependencies": {
-    "@types/chai": "^5.2.3",
     "@types/mocha": "^10.0.10",
     "@types/node": "22.x",
     "@types/vscode": "^1.106.1",
     "@vscode/test-cli": "^0.0.12",
     "@vscode/test-electron": "^2.5.2",
-    "chai": "^6.2.1",
     "eslint": "^9.39.1",
     "mocha": "^11.7.5",
     "ts-loader": "^9.5.4",

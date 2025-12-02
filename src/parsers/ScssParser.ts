@@ -6,9 +6,15 @@ export class ScssParser {
   private static readonly CARBON_MODULES = [
     '@carbon/react/scss/spacing',
     '@carbon/react/scss/theme',
+    '@carbon/react/scss/type',
+    '@carbon/react/scss/motion',
     '@carbon/styles/scss/spacing',
     '@carbon/styles/scss/theme',
     '@carbon/styles/scss/type',
+    '@carbon/styles/scss/motion',
+    '@carbon/styles/scss/colors',
+    '@carbon/layout/scss/spacing',
+    '@carbon/layout/scss/layout',
   ];
 
   public static parseDocument(document: vscode.TextDocument): ParsedImport[] {
@@ -43,14 +49,20 @@ export class ScssParser {
   }
 
   private static isCarbonModule(modulePath: string): boolean {
-    return this.CARBON_MODULES.some(m => modulePath.includes(m));
+    // More flexible: match any @carbon module with /scss/ path
+    return modulePath.includes('@carbon/') && 
+           (modulePath.includes('/scss/') || modulePath.includes('/styles'));
   }
 
   public static getNamespaceAtPosition(document: vscode.TextDocument, position: vscode.Position): string | null {
     const line = document.lineAt(position.line).text;
     const before = line.substring(0, position.character);
-    const match = before.match(/(\w+)\.$/);
-    return match ? match[1] : null;
+    // Match either `namespace.` (cursor after the dot) or `namespace.$` (cursor after the dollar)
+    let match = before.match(/(\w+)\.$/);
+    if (match) return match[1];
+    match = before.match(/(\w+)\.\$\w*$/);
+    if (match) return match[1];
+    return null;
   }
 
   public static isInScssContext(document: vscode.TextDocument, position: vscode.Position): boolean {
@@ -67,7 +79,10 @@ export class ScssParser {
    */
   public static getNamespaceFromTextAtIndex(text: string, index: number): string | null {
     const before = text.substring(0, index);
-    const match = before.match(/(\w+)\.$/);
-    return match ? match[1] : null;
+    let match = before.match(/(\w+)\.$/);
+    if (match) return match[1];
+    match = before.match(/(\w+)\.\$\w*$/);
+    if (match) return match[1];
+    return null;
   }
 }
