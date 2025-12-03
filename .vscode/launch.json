@@ -10,12 +10,16 @@
 			"type": "extensionHost",
 			"request": "launch",
 			"args": [
-				"--extensionDevelopmentPath=${workspaceFolder}"
+				"--extensionDevelopmentPath=/Users/coleman/Documents/colecodes/carbon-intellisense",
+				"--verbose",
+				"--log=debug"
 			],
 			"outFiles": [
 				"${workspaceFolder}/dist/**/*.js"
 			],
-			"preLaunchTask": "npm: compile"
+			"preLaunchTask": "npm: compile",
+			"console": "integratedTerminal",
+			"internalConsoleOptions": "openOnSessionStart"
 		}
 	]
 }

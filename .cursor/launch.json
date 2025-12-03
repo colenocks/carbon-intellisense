@@ -1,0 +1,23 @@
+// Cursor-specific launch configuration for extension development
+// Cursor uses the same extension API as VS Code, but may need explicit configuration
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "Run Extension (Cursor)",
+			"type": "extensionHost",
+			"request": "launch",
+			"args": [
+				"--extensionDevelopmentPath=${workspaceFolder}",
+				"--verbose"
+			],
+			"outFiles": [
+				"${workspaceFolder}/dist/**/*.js"
+			],
+			"preLaunchTask": "npm: compile",
+			"console": "integratedTerminal",
+			"internalConsoleOptions": "openOnSessionStart"
+		}
+	]
+}
+

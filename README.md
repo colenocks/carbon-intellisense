@@ -2,6 +2,18 @@
 
 Intelligent code completion and hover documentation for [Carbon Design System](https://www.carbondesignsystem.com/) design tokens in SCSS and CSS files.
 
+**Compatible with:** VS Code, Cursor, and other VS Code-compatible editors
+
+## IDE Compatibility
+
+This extension uses the VS Code Extension API (`vscode` namespace), which is implemented by:
+
+- **VS Code** (Microsoft)
+- **Cursor** (Cursor AI) - built on VS Code, uses the same extension API
+- **Other VS Code-compatible editors** (GitHub Codespaces, etc.)
+
+The `vscode` types work across all these IDEs because they all implement the same API. This extension will work seamlessly in any editor that supports VS Code extensions.
+
 ## Features
 
 - 🎨 **Auto-completion** for Carbon design tokens (spacing, colors, typography, layout, motion)
@@ -12,7 +24,7 @@ Intelligent code completion and hover documentation for [Carbon Design System](h
 
 ## Installation
 
-Install from the VS Code Extension Marketplace or build from source:
+Install from the VS Code Extension Marketplace (works in VS Code, Cursor, and other compatible editors) or build from source:
 
 ```bash
 npm install
@@ -39,7 +51,7 @@ Type the namespace followed by a dot to trigger auto-completion:
 
 ```scss
 // Spacing tokens
-margin: spacing.$spacing-03;  // 8px
+margin: spacing.$spacing-03; // 8px
 padding: spacing.$spacing-05; // 16px
 
 // Theme colors
@@ -104,7 +116,20 @@ npm run watch-tests
 
 # Package for publishing
 npm run package
+
+# Verify extension configuration (checks setup for VS Code/Cursor)
+node verify-extension.js
 ```
+
+### Testing in Cursor IDE
+
+See [docs/cursor-testing.md](docs/cursor-testing.md) for detailed Cursor-specific testing instructions.
+
+**Quick test:**
+
+1. Open extension folder in Cursor
+2. Press `F5` to launch Extension Development Host
+3. Open `test-example.scss` and type `spacing.` to test completion
 
 ## Extension Architecture
 
@@ -125,4 +150,3 @@ Contributions welcome! Please ensure code follows the ESLint style guide and inc
 ## License
 
 [Apache License 2.0](LICENSE)
-

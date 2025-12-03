@@ -9,6 +9,7 @@ import { motionTokens } from './motionTokens';
 export class TokenDatabase {
   private tokens: Map<string, Token[]> = new Map();
   private currentTheme: CarbonTheme = 'white';
+  // vscode.FileSystemWatcher works in other VS Code-compatible editors
   private watcher: vscode.FileSystemWatcher | null = null;
 
   constructor() {
@@ -59,17 +60,22 @@ export class TokenDatabase {
 
   /**
    * Start watching workspace SCSS files to invalidate caches when imports change.
+   * Returns the watcher so it can be added to extension context subscriptions.
    */
-  public startWatchingWorkspace(): void {
-    if (this.watcher) return;
+  public startWatchingWorkspace(): vscode.FileSystemWatcher | null {
+    if (this.watcher) {
+      return this.watcher;
+    }
     try {
       this.watcher = vscode.workspace.createFileSystemWatcher('**/*.scss');
       const onChange = () => this.handleWorkspaceChange();
       this.watcher.onDidChange(onChange);
       this.watcher.onDidCreate(onChange);
       this.watcher.onDidDelete(onChange);
+      return this.watcher;
     } catch (e) {
       // ignore in environments without workspace access
+      return null;
     }
   }
 

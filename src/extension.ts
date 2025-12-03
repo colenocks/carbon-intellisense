@@ -8,11 +8,19 @@ let tokenDatabase: TokenDatabase;
 let completionProvider: CarbonCompletionProvider;
 
 export function activate(context: vscode.ExtensionContext) {
+	if (!context || context.subscriptions === undefined) {
+		console.error('[Carbon] Invalid extension context provided');
+		return;
+	}
+
 	try {
 		logger.info('Carbon IntelliSense extension activated');
 
 		tokenDatabase = new TokenDatabase();
-		tokenDatabase.startWatchingWorkspace();
+		const watcher = tokenDatabase.startWatchingWorkspace();
+		if (watcher) {
+			context.subscriptions.push(watcher);
+		}
 
 		completionProvider = new CarbonCompletionProvider(tokenDatabase);
 		const hoverProvider = new CarbonHoverProvider(tokenDatabase);
@@ -55,41 +63,6 @@ export function activate(context: vscode.ExtensionContext) {
 		});
 		context.subscriptions.push(invokeProviderCmd);
 
-		// Diagnostic command to inspect token database and parser state
-		const debugParserCmd = vscode.commands.registerCommand('carbonIntellisense.debugParser', async () => {
-			const editor = vscode.window.activeTextEditor;
-			if (!editor) { vscode.window.showInformationMessage('[Carbon Debug] No active editor'); return; }
-			
-			const doc = editor.document;
-			const pos = editor.selection.active;
-			
-			const { ScssParser } = require('./parsers/ScssParser');
-			
-			const parsed = ScssParser.parseDocument(doc);
-			const namespace = ScssParser.getNamespaceAtPosition(doc, pos);
-			const allTokens = tokenDatabase.getAllTokens();
-			
-			let msg = `[Carbon Debug]\n`;
-			msg += `File: ${doc.uri.toString()}\n`;
-			msg += `Language: ${doc.languageId}\n`;
-			msg += `Cursor position: ${pos.line}:${pos.character}\n`;
-			msg += `Detected namespace at cursor: ${namespace || 'null'}\n`;
-			msg += `Parsed @use imports: ${parsed.length}\n`;
-			parsed.forEach((p: any) => {
-				msg += `  - namespace: "${p.namespace}", path: "${p.modulePath}"\n`;
-			});
-			msg += `\nToken database:\n`;
-			msg += `  Total tokens: ${allTokens.length}\n`;
-			msg += `  Namespaces: spacing, theme, layout, type, motion\n`;
-			msg += `  Tokens per namespace:\n`;
-			['spacing', 'theme', 'layout', 'type', 'motion'].forEach((ns: string) => {
-				const nsTokens = tokenDatabase.getTokensForNamespace(ns);
-				msg += `    - ${ns}: ${nsTokens.length} tokens\n`;
-			});
-			
-			vscode.window.showInformationMessage(msg);
-		});
-		context.subscriptions.push(debugParserCmd);
 
 		const scssCompletionDisposable = vscode.languages.registerCompletionItemProvider(
 			{ scheme: 'file', language: 'scss' },
@@ -126,17 +99,35 @@ export function activate(context: vscode.ExtensionContext) {
 			}
 		});
 
-		context.subscriptions.push(
-			scssCompletionDisposable,
-			cssCompletionDisposable,
-			fallbackDisposable,
-			hoverDisposable,
-			documentChangeDisposable,
-			configChangeDisposable
-		);
+		// Add all disposables synchronously to avoid race conditions
+		try {
+			context.subscriptions.push(
+				scssCompletionDisposable,
+				cssCompletionDisposable,
+				fallbackDisposable,
+				hoverDisposable,
+				documentChangeDisposable,
+				configChangeDisposable
+			);
+		} catch (e) {
+			console.error('[Carbon] Error adding disposables to context:', e);
+			// Dispose manually if context is invalid
+			scssCompletionDisposable.dispose();
+			cssCompletionDisposable.dispose();
+			fallbackDisposable.dispose();
+			hoverDisposable.dispose();
+			documentChangeDisposable.dispose();
+			configChangeDisposable.dispose();
+			throw e;
+		}
+
+		logger.info('Carbon IntelliSense extension fully initialized');
 	} catch (error) {
+		const errorMessage = error instanceof Error ? error.message : String(error);
+		const errorStack = error instanceof Error ? error.stack : undefined;
+		console.error('[Carbon] FATAL ERROR during activation:', errorMessage, errorStack);
 		logger.error('FATAL ERROR during activation:', error);
-		vscode.window.showErrorMessage(`[Carbon] Activation failed: ${error}`);
+		vscode.window.showErrorMessage(`[Carbon] Activation failed: ${errorMessage}`);
 	}
 }
 

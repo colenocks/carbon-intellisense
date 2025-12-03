@@ -4,3 +4,6 @@ node_modules
 .vscode-test/
 *.vsix
 architectural-plan.md
+
+# Debugging and troubleshooting docs (no longer needed)
+# docs/debugging/
