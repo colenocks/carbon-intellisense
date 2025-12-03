@@ -51,7 +51,12 @@
         "carbonIntellisense.theme": {
           "type": "string",
           "default": "white",
-          "enum": ["white", "g10", "g90", "g100"],
+          "enum": [
+            "white",
+            "g10",
+            "g90",
+            "g100"
+          ],
           "description": "Carbon theme for token value suggestions"
         },
         "carbonIntellisense.showComputedValues": {
@@ -81,6 +86,7 @@
     "@vscode/test-electron": "^2.5.2",
     "eslint": "^9.39.1",
     "mocha": "^11.7.5",
+    "prettier": "^3.7.4",
     "ts-loader": "^9.5.4",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.46.3",
