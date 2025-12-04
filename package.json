@@ -79,6 +79,12 @@
     "test": "npm run compile-tests && mocha --recursive out/test --reporter spec"
   },
   "devDependencies": {
+    "@carbon/colors": "^11.43.0",
+    "@carbon/elements": "^11.80.0",
+    "@carbon/layout": "^11.44.0",
+    "@carbon/motion": "^11.38.0",
+    "@carbon/themes": "^11.64.0",
+    "@carbon/type": "^11.50.0",
     "@types/mocha": "^10.0.10",
     "@types/node": "22.x",
     "@types/vscode": "^1.105.0",
