@@ -24,12 +24,28 @@ The `vscode` types work across all these IDEs because they all implement the sam
 
 ## Installation
 
-Install from the VS Code Extension Marketplace (works in VS Code, Cursor, and other compatible editors) or build from source:
+### From Marketplace
+
+Install directly from the VS Code Extension Marketplace. The extension works in VS Code, Cursor, and other VS Code-compatible editors.
+
+### From Source
 
 ```bash
+# Clone the repository
+git clone https://github.com/colenocks/carbon-intellisense.git
+cd carbon-intellisense
+
+# Install dependencies
 npm install
+
+# Compile TypeScript
 npm run compile
-vsce package
+
+# Package extension
+npm run package
+
+# Install locally (optional)
+code --install-extension carbon-intellisense-0.1.0.vsix
 ```
 
 ## Usage
@@ -98,9 +114,14 @@ Configure token display via VS Code settings:
 - **Layout** — Container and gutter dimensions
 - **Motion** — Duration and easing tokens
 
-## Build & Development
+## Development
+
+For developers who want to contribute or build from source:
 
 ```bash
+# Install dependencies
+npm install
+
 # Compile TypeScript and bundle extension
 npm run compile
 
@@ -114,22 +135,9 @@ npm run lint
 npm run compile-tests
 npm run watch-tests
 
-# Package for publishing
+# Package for distribution
 npm run package
-
-# Verify extension configuration (checks setup for VS Code/Cursor)
-node verify-extension.js
 ```
-
-### Testing in Cursor IDE
-
-See [docs/cursor-testing.md](docs/cursor-testing.md) for detailed Cursor-specific testing instructions.
-
-**Quick test:**
-
-1. Open extension folder in Cursor
-2. Press `F5` to launch Extension Development Host
-3. Open `test-example.scss` and type `spacing.` to test completion
 
 ## Extension Architecture
 
@@ -138,10 +146,16 @@ See [docs/cursor-testing.md](docs/cursor-testing.md) for detailed Cursor-specifi
 - `src/providers/` — VS Code completion and hover providers
 - `src/extension.ts` — Extension activation and provider registration
 
+For details on performance optimizations and publishing instructions, see the [docs](docs/) directory.
+
 ## Known Limitations
 
 - Requires explicit `@use` imports; namespace-less token references are not supported
 - Token values are statically defined; dynamic/computed token loading from files is not yet implemented
+
+## Version History
+
+See [CHANGELOG.md](CHANGELOG.md) for detailed version history and release notes.
 
 ## Contributing
 
