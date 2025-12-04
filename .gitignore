@@ -4,4 +4,6 @@ node_modules
 .vscode-test/
 *.vsix
 architectural-plan.md
+docs/anon/
 scripts/
+.DS_Store
