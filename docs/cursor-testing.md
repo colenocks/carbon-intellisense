@@ -1,6 +1,6 @@
 # Testing in Cursor IDE
 
-This guide helps you test the Carbon IntelliSense extension in Cursor IDE.
+This guide helps you test the Carbon CSS IntelliSense extension in Cursor IDE.
 
 ## Quick Start
 
@@ -9,7 +9,7 @@ This guide helps you test the Carbon IntelliSense extension in Cursor IDE.
 1. **Open the extension folder in Cursor:**
 
    ```bash
-   cd /path/to/carbon-intellisense
+   cd /path/to/carbon-css-intellisense
    cursor .
    ```
 
@@ -44,7 +44,7 @@ If F5 doesn't work, you can manually install the extension:
 
    - Open Cursor
    - Cmd+Shift+P → "Extensions: Install from VSIX..."
-   - Select `carbon-intellisense-0.1.0.vsix` from the project root
+   - Select `carbon-css-intellisense-0.1.0.vsix` from the project root
 
 3. **Reload Cursor:**
    - Cmd+Shift+P → "Developer: Reload Window"
@@ -123,19 +123,19 @@ This will check:
 
 The extension provides these debug commands:
 
-1. **Carbon IntelliSense: Diagnostics**
+1. **Carbon CSS IntelliSense: Diagnostics**
 
    - Shows current editor state
-   - Cmd+Shift+P → "Carbon IntelliSense: Diagnostics"
+   - Cmd+Shift+P → "Carbon CSS IntelliSense: Diagnostics"
 
-2. **Carbon IntelliSense: Invoke Provider**
+2. **Carbon CSS IntelliSense: Invoke Provider**
 
    - Manually triggers completion provider
    - Useful for debugging
 
-3. **Carbon IntelliSense: Debug Parser**
+3. **Carbon CSS IntelliSense: Debug Parser**
    - Shows parsed imports and token database state
-   - Cmd+Shift+P → "Carbon IntelliSense: Debug Parser"
+   - Cmd+Shift+P → "Carbon CSS IntelliSense: Debug Parser"
 
 ## Differences from VS Code
 

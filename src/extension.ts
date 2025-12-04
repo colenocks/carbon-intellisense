@@ -14,7 +14,7 @@ export function activate(context: vscode.ExtensionContext) {
 	}
 
 	try {
-		logger.info('Carbon IntelliSense extension activated');
+		logger.info('Carbon CSS IntelliSense extension activated');
 
 		tokenDatabase = new TokenDatabase();
 		const watcher = tokenDatabase.startWatchingWorkspace();
@@ -26,7 +26,7 @@ export function activate(context: vscode.ExtensionContext) {
 		const hoverProvider = new CarbonHoverProvider(tokenDatabase);
 
 		// Diagnostic command to check current editor state
-		const diagnosticCmd = vscode.commands.registerCommand('carbonIntellisense.diagnostics', () => {
+		const diagnosticCmd = vscode.commands.registerCommand('carbonCssIntellisense.diagnostics', () => {
 			const editor = vscode.window.activeTextEditor;
 			if (!editor) {
 				vscode.window.showInformationMessage('[Carbon Diagnostics] No active editor');
@@ -38,7 +38,7 @@ export function activate(context: vscode.ExtensionContext) {
 		context.subscriptions.push(diagnosticCmd);
 
 		// Command to directly invoke the completion provider for the active editor (debugging only)
-		const invokeProviderCmd = vscode.commands.registerCommand('carbonIntellisense.invokeProvider', async () => {
+		const invokeProviderCmd = vscode.commands.registerCommand('carbonCssIntellisense.invokeProvider', async () => {
 			const editor = vscode.window.activeTextEditor;
 			if (!editor) { vscode.window.showInformationMessage('[Carbon] No active editor'); return; }
 			const pos = editor.selection.active;
@@ -92,8 +92,8 @@ export function activate(context: vscode.ExtensionContext) {
 		});
 
 		const configChangeDisposable = vscode.workspace.onDidChangeConfiguration(event => {
-			if (event.affectsConfiguration('carbonIntellisense.theme')) {
-				const config = vscode.workspace.getConfiguration('carbonIntellisense');
+			if (event.affectsConfiguration('carbonCssIntellisense.theme')) {
+				const config = vscode.workspace.getConfiguration('carbonCssIntellisense');
 				const theme = config.get<string>('theme', 'white') as any;
 				tokenDatabase.setTheme(theme);
 			}
@@ -121,7 +121,7 @@ export function activate(context: vscode.ExtensionContext) {
 			throw e;
 		}
 
-		logger.info('Carbon IntelliSense extension fully initialized');
+		logger.info('Carbon CSS IntelliSense extension fully initialized');
 	} catch (error) {
 		const errorMessage = error instanceof Error ? error.message : String(error);
 		const errorStack = error instanceof Error ? error.stack : undefined;
@@ -132,7 +132,7 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 export function deactivate() {
-	logger.info('Carbon IntelliSense extension deactivated');
+	logger.info('Carbon CSS IntelliSense extension deactivated');
 	if (tokenDatabase) {
 		tokenDatabase.dispose();
 	}

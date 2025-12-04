@@ -53,7 +53,7 @@
 
 ## Configuration (Optional)
 
-Open Settings (Cmd+, on macOS) and search for "Carbon IntelliSense":
+Open Settings (Cmd+, on macOS) and search for "Carbon CSS IntelliSense":
 
 - **Theme:** Change from white to g10, g90, or g100
 - **Show Computed Values:** Toggle to hide/show pixel equivalents

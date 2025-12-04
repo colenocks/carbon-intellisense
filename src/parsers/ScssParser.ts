@@ -58,8 +58,8 @@ export class ScssParser {
 
   private static isCarbonModule(modulePath: string): boolean {
     // More flexible: match any @carbon module with /scss/ path
-    return modulePath.includes('@carbon/') && 
-           (modulePath.includes('/scss/') || modulePath.includes('/styles'));
+    return modulePath.includes('@carbon/') &&
+      (modulePath.includes('/scss/') || modulePath.includes('/styles'));
   }
 
   public static getNamespaceAtPosition(document: vscode.TextDocument, position: vscode.Position): string | null {

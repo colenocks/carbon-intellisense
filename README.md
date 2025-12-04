@@ -1,4 +1,4 @@
-# Carbon Design System IntelliSense
+# Carbon CSS IntelliSense
 
 Intelligent code completion and hover documentation for [Carbon Design System](https://www.carbondesignsystem.com/) design tokens in SCSS and CSS files.
 
@@ -32,8 +32,8 @@ Install directly from the VS Code Extension Marketplace. The extension works in 
 
 ```bash
 # Clone the repository
-git clone https://github.com/colenocks/carbon-intellisense.git
-cd carbon-intellisense
+git clone https://github.com/colenocks/carbon-css-intellisense.git
+cd carbon-css-intellisense
 
 # Install dependencies
 npm install
@@ -45,7 +45,7 @@ npm run compile
 npm run package
 
 # Install locally (optional)
-code --install-extension carbon-intellisense-0.1.0.vsix
+code --install-extension carbon-css-intellisense-0.1.0.vsix
 ```
 
 ## Usage
@@ -94,8 +94,8 @@ Configure token display via VS Code settings:
 
 ```json
 {
-  "carbonIntellisense.theme": "white",
-  "carbonIntellisense.showComputedValues": true
+  "carbonCssIntellisense.theme": "white",
+  "carbonCssIntellisense.showComputedValues": true
 }
 ```
 

@@ -1,12 +1,12 @@
 # Change Log
 
-All notable changes to the "carbon-intellisense" extension will be documented in this file.
+All notable changes to the "carbon-css-intellisense" extension will be documented in this file.
 
 ## [0.1.0] - 2025-11-27
 
 ### Added
 
-- Initial release of Carbon Design System IntelliSense
+- Initial release of Carbon CSS IntelliSense
 - Auto-completion for Carbon design tokens (spacing, color, typography, layout, motion)
 - Hover provider with token values, computed values, and descriptions
 - SCSS parser for `@use` import detection and namespace resolution
@@ -22,7 +22,7 @@ All notable changes to the "carbon-intellisense" extension will be documented in
 - Supports Carbon Design System spacing tokens (spacing-01 through spacing-13)
 - Supports theme colors with multi-theme variants (white, g10, g90, g100)
 - Supports typography, layout, and motion tokens
-- Configuration via `carbonIntellisense.theme` and `carbonIntellisense.showComputedValues`
+- Configuration via `carbonCssIntellisense.theme` and `carbonCssIntellisense.showComputedValues`
 - Works with SCSS and CSS files
 - Zero-configuration setup with standard Carbon imports
 - Caches parsed imports per document for performance

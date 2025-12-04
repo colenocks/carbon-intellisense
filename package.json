@@ -1,13 +1,13 @@
 {
-  "name": "carbon-intellisense",
-  "displayName": "Carbon Design System IntelliSense",
-  "description": "Auto-completion and intellisense documentation for Carbon Design System SCSS tokens",
+  "name": "carbon-css-intellisense",
+  "displayName": "Carbon CSS IntelliSense",
+  "description": "Auto-completion and intellisense documentation for Carbon Design System SCSS and CSS tokens",
   "version": "0.1.0",
   "publisher": "colenocks",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/colenocks/carbon-intellisense"
+    "url": "https://github.com/colenocks/carbon-css-intellisense"
   },
   "keywords": [
     "carbon",
@@ -28,26 +28,26 @@
   "activationEvents": [
     "onLanguage:scss",
     "onLanguage:css",
-    "onCommand:carbonIntellisense.diagnostics"
+    "onCommand:carbonCssIntellisense.diagnostics"
   ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "carbonIntellisense.diagnostics",
-        "title": "Carbon IntelliSense: Diagnostics",
-        "category": "Carbon IntelliSense"
+        "command": "carbonCssIntellisense.diagnostics",
+        "title": "Carbon CSS IntelliSense: Diagnostics",
+        "category": "Carbon CSS IntelliSense"
       },
       {
-        "command": "carbonIntellisense.invokeProvider",
-        "title": "Carbon IntelliSense: Invoke Provider",
-        "category": "Carbon IntelliSense"
+        "command": "carbonCssIntellisense.invokeProvider",
+        "title": "Carbon CSS IntelliSense: Invoke Provider",
+        "category": "Carbon CSS IntelliSense"
       }
     ],
     "configuration": {
-      "title": "Carbon IntelliSense",
+      "title": "Carbon CSS IntelliSense",
       "properties": {
-        "carbonIntellisense.theme": {
+        "carbonCssIntellisense.theme": {
           "type": "string",
           "default": "white",
           "enum": [
@@ -58,7 +58,7 @@
           ],
           "description": "Carbon theme for token value suggestions"
         },
-        "carbonIntellisense.showComputedValues": {
+        "carbonCssIntellisense.showComputedValues": {
           "type": "boolean",
           "default": true,
           "description": "Show computed pixel values in suggestions"
