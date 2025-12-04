@@ -67,16 +67,22 @@ export class ScssParser {
     const before = line.substring(0, position.character);
     // Match either `namespace.` (cursor after the dot) or `namespace.$` (cursor after the dollar)
     let match = before.match(/(\w+)\.$/);
-    if (match) return match[1];
+    if (match)  { 
+      return match[1];
+    };
     match = before.match(/(\w+)\.\$\w*$/);
-    if (match) return match[1];
+    if (match)  { 
+      return match[1];
+    };
     return null;
   }
 
   public static isInScssContext(document: vscode.TextDocument, position: vscode.Position): boolean {
     const line = document.lineAt(position.line).text;
     const before = line.substring(0, position.character);
-    if (before.includes('//') || before.includes('/*')) return false;
+    if (before.includes('//') || before.includes('/*')) {
+      return false;
+    }
     const s = (before.match(/'/g) || []).length;
     const d = (before.match(/"/g) || []).length;
     return s % 2 === 0 && d % 2 === 0;
@@ -88,9 +94,13 @@ export class ScssParser {
   public static getNamespaceFromTextAtIndex(text: string, index: number): string | null {
     const before = text.substring(0, index);
     let match = before.match(/(\w+)\.$/);
-    if (match) return match[1];
+    if (match) { 
+      return match[1];
+    };
     match = before.match(/(\w+)\.\$\w*$/);
-    if (match) return match[1];
+    if (match) { 
+      return match[1];
+    };
     return null;
   }
 }

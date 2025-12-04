@@ -75,7 +75,7 @@
     "watch-tests": "tsc -p tsconfig.test.json -w",
     "pretest": "npm run compile-tests && npm run compile && npm run lint",
     "lint": "eslint src",
-    "test": "npm run compile-tests && mocha --recursive out/test --reporter spec"
+    "test": "npm run compile-tests && node test/run-tests.js --recursive out/test --reporter spec"
   },
   "devDependencies": {
     "@carbon/colors": "^11.43.0",
