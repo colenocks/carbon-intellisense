@@ -34,7 +34,14 @@ const extensionConfig = {
         exclude: /node_modules/,
         use: [
           {
-            loader: 'ts-loader'
+            loader: 'ts-loader',
+            options: {
+              // Optimize for production builds
+              transpileOnly: false,
+              compilerOptions: {
+                sourceMap: false // Source maps handled by webpack devtool
+              }
+            }
           }
         ]
       }
@@ -42,7 +49,14 @@ const extensionConfig = {
   },
   devtool: 'nosources-source-map',
   infrastructureLogging: {
-    level: "log", // enables logging required for problem matchers
+    level: 'log', // enables logging required for problem matchers
   },
+  // Optimize bundle size
+  optimization: {
+    minimize: false // VS Code extensions should not be minified
+  },
+  performance: {
+    hints: false // Disable performance hints for extensions
+  }
 };
 module.exports = [ extensionConfig ];
