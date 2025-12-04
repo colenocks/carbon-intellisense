@@ -11,11 +11,15 @@ export class CarbonHoverProvider implements vscode.HoverProvider {
 
   public provideHover(document: vscode.TextDocument, position: vscode.Position): vscode.ProviderResult<vscode.Hover> {
     const wordRange = document.getWordRangeAtPosition(position, /\$?\w[\w-]*/);
-    if (!wordRange) {return null;}
+    if (!wordRange) {
+      return null;
+    }
     const word = document.getText(wordRange).replace(/^\$/, '');
 
-    const token = this.tokenDatabase.getAllTokens().find(t => t.name === word);
-    if (!token) {return null;}
+    const token = this.tokenDatabase.getTokenByName(word);
+    if (!token) {
+      return null;
+    }
 
     const doc = formatTokenDocumentation(token as any, this.tokenDatabase);
     const md = new vscode.MarkdownString(doc);

@@ -8,6 +8,7 @@ import { motionTokens } from './motionTokens';
 
 export class TokenDatabase {
   private tokens: Map<string, Token[]> = new Map();
+  private tokenLookup: Map<string, Token> = new Map();
   private currentTheme: CarbonTheme = 'white';
   // vscode.FileSystemWatcher works in other VS Code-compatible editors
   private watcher: vscode.FileSystemWatcher | null = null;
@@ -26,6 +27,9 @@ export class TokenDatabase {
 
   private addTokens(namespace: string, tokens: Token[]): void {
     this.tokens.set(namespace, tokens);
+    tokens.forEach(token => {
+      this.tokenLookup.set(token.name, token);
+    });
   }
 
   public getTokensForNamespace(namespace: string): Token[] {
@@ -36,6 +40,10 @@ export class TokenDatabase {
     const all: Token[] = [];
     this.tokens.forEach(arr => all.push(...arr));
     return all;
+  }
+
+  public getTokenByName(name: string): Token | undefined {
+    return this.tokenLookup.get(name);
   }
 
   public searchTokens(query: string): Token[] {

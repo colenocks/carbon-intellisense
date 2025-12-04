@@ -20,6 +20,8 @@ export class ScssParser {
   public static parseDocument(document: vscode.TextDocument): ParsedImport[] {
     const imports: ParsedImport[] = [];
     const text = document.getText();
+    // Reset regex lastIndex to avoid issues with global flag
+    this.USE_PATTERN.lastIndex = 0;
     let match: RegExpExecArray | null;
     while ((match = this.USE_PATTERN.exec(text)) !== null) {
       const modulePath = match[1];
@@ -29,6 +31,8 @@ export class ScssParser {
         imports.push({ namespace, modulePath, line });
       }
     }
+    // Reset again after use
+    this.USE_PATTERN.lastIndex = 0;
     return imports;
   }
 
@@ -37,6 +41,8 @@ export class ScssParser {
    */
   public static parseText(text: string): ParsedImport[] {
     const imports: ParsedImport[] = [];
+    // Reset regex lastIndex to avoid issues with global flag
+    this.USE_PATTERN.lastIndex = 0;
     let match: RegExpExecArray | null;
     while ((match = this.USE_PATTERN.exec(text)) !== null) {
       const modulePath = match[1];
@@ -45,6 +51,8 @@ export class ScssParser {
         imports.push({ namespace, modulePath, line: 0 });
       }
     }
+    // Reset again after use
+    this.USE_PATTERN.lastIndex = 0;
     return imports;
   }
 
